@@ -9,7 +9,7 @@ const NewsletterBox = () => {
       <p className="text-2xl font-medium text-shadow-gray-800">
         Subscribe now & get 20% off
       </p>
-      <p className="text-gray-400 mt-3">
+      <p className="text-gray-400 mt-5 mb-5">
         {" "}
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus,
         modi.
@@ -18,10 +18,10 @@ const NewsletterBox = () => {
         <input
           type="email"
           placeholder="Enter your email"
-          className="w-full sm:flex-1 outline-none"
+          className="w-full sm:flex-1 outline-none "
           required
         />
-        <button type="submit" className="bg-black text-white text-xs px-10 py-4">SUBSCRIBE</button>
+        <button type="submit" className="bg-black text-white text-xs px-10 py-4 cursor-pointer">SUBSCRIBE</button>
       </form>
     </div>
   );

@@ -28,11 +28,16 @@ input[type="number"] {
   appearance: textfield;
 }
 
+
+
 @layer base {
   *,
   ::after,
   ::before {
     border-color: var(--color-gray-200);
+  }
+   button {
+    cursor: pointer;
   }
 }
 @media (max-width:640px){
