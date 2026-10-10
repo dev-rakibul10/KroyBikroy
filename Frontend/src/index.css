@@ -2,11 +2,48 @@
 
 @import "tailwindcss";
 
-a.active hr{
+/* ---------- Theme tokens ---------- */
+:root {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --fg: #1f2937;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --primary: #000000;
+  --primary-fg: #ffffff;
+}
+
+.dark {
+  --bg: #0b0b0c;
+  --surface: #151517;
+  --fg: #f3f4f6;
+  --muted: #9ca3af;
+  --line: #3f3f46;
+  --primary: #ffffff;
+  --primary-fg: #000000;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-fg);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+/* ---------- Your existing styles ---------- */
+a.active hr {
   display: block;
 }
 
-*{
+* {
   font-family: Outfit;
 }
 
@@ -15,9 +52,11 @@ a.active hr{
   font-weight: 400;
   font-style: normal;
 }
-::-webkit-scrollbar{
+
+::-webkit-scrollbar {
   display: none;
 }
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -28,21 +67,20 @@ input[type="number"] {
   appearance: textfield;
 }
 
-
-
 @layer base {
   *,
   ::after,
   ::before {
-    border-color: var(--color-gray-200);
+    border-color: var(--line); /* was var(--color-gray-200) */
   }
-   button {
+  button {
     cursor: pointer;
   }
 }
-@media (max-width:640px){
-  a.active{
-    background-color: black;
-    color: white;
+
+@media (max-width: 640px) {
+  a.active {
+    background-color: var(--primary); /* was black */
+    color: var(--primary-fg);         /* was white */
   }
 }

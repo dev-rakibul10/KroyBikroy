@@ -5,7 +5,7 @@ import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
 
 const CATEGORIES = ["Men", "Women", "Kids"];
-const TYPES = ["Topwear", "Bottomwear", "Winterwear"];
+const TYPES = ["TopWear", "BottomWear", "Winter"];
 
 // Defined OUTSIDE Collections (see note below)
 const FilterGroup = ({ title, options, onToggle, className }) => (

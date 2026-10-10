@@ -6,20 +6,20 @@ import ProductList from "./pages/ProductList";
 import Orders from "./pages/Orders";
 import { useState } from "react";
 import Login from "./components/Login";
-  import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import { useEffect } from "react";
+import EditProduct from "./pages/EditProduct";
 
-
-export const backendUrl = import.meta.env.VITE_BACKEND_URL
-
-
+export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : '');
+  const [token, setToken] = useState(
+    localStorage.getItem("token") ? localStorage.getItem("token") : "",
+  );
 
   useEffect(() => {
-    localStorage.setItem('token', token) //Improve LocalStorage and login stuff later
-  },[token])
+    localStorage.setItem("token", token); //Improve LocalStorage and login stuff later
+  }, [token]);
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -28,7 +28,7 @@ function App() {
         <Login setToken={setToken} />
       ) : (
         <>
-          <Navbar setToken ={setToken} />
+          <Navbar setToken={setToken} />
           <hr />
           <div className="flex w-full">
             <Sidebar />
@@ -37,6 +37,10 @@ function App() {
                 <Route path="/add" element={<Add token={token} />} />
                 <Route path="/list" element={<ProductList token={token} />} />
                 <Route path="/orders" element={<Orders token={token} />} />
+                <Route
+                  path="edit-product/:productId"
+                  element={<EditProduct token={token} />}
+                />
               </Routes>
             </div>
           </div>

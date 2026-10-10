@@ -6,7 +6,7 @@ import parcel_icon from './img/parcel_icon.svg'
 
 const category = ['Men', 'Women', 'Kids'];
 const subCategory = ['TopWear', 'BottomWear', 'Winter'];
-
+const Currency = '৳'
 
 export const assets = {
     logo,
@@ -15,6 +15,7 @@ export const assets = {
     upload_area,
     parcel_icon,
     category,
-    subCategory
+    subCategory,
+    Currency
 }
 
