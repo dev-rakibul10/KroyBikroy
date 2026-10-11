@@ -2,10 +2,8 @@ import { useContext, useState, useEffect } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { toast } from "react-toastify";
 import axios from "axios";
-
-const inputClass =
-  "w-full border border-line bg-surface px-4 py-2.5 text-sm text-fg outline-none transition " +
-  "placeholder:text-muted focus:border-primary focus:ring-1 focus:ring-primary";
+import AuthImagePanel from "../components/login/AuthImagePanel";
+import { FormField, PasswordField } from "../components/login/AuthFields";
 
 const Login = () => {
   const [currentState, setCurrentState] = useState("Login");
@@ -19,6 +17,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const isSignUp = currentState === "Sign Up";
+  const mismatch = isSignUp && confirmPassword && password !== confirmPassword;
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -55,99 +54,162 @@ const Login = () => {
     setCurrentState(isSignUp ? "Login" : "Sign Up");
     setConfirmPassword("");
   };
+
+  // the toggle only switches when the OTHER tab is clicked
+  const goTo = (mode) => {
+    if (mode !== currentState) switchMode();
+  };
+
   useEffect(() => {
     if (token) navigate("/", { replace: true });
   }, [token, navigate]);
 
   return (
-    <div className="flex min-h-[70vh] items-center justify-center px-4">
-      <form
-        onSubmit={onSubmitHandler}
-        className="flex w-full max-w-sm flex-col gap-4 border border-line bg-surface p-8 text-fg"
-      >
-        <div className="mb-2 text-center">
-          <h1 className="prata-regular text-3xl">
-            {isSignUp ? "Sign Up" : "Login"}
-          </h1>
-          <p className="mt-1 text-sm text-muted">
-            {isSignUp ? "Create an account to start shopping" : "Welcome back"}
-          </p>
-        </div>
+    <div className="mx-auto my-8 grid w-full max-w-5xl overflow-hidden border border-line bg-surface text-fg sm:my-12 lg:min-h-[34rem] lg:grid-cols-2">
+      <AuthImagePanel />
 
-        {isSignUp && (
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className={inputClass}
-            placeholder="Name"
-            autoComplete="name"
-            required
-          />
-        )}
-
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className={inputClass}
-          placeholder="Email"
-          autoComplete="email"
-          required
-        />
-
-        <div className="relative">
-          <input
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={`${inputClass} pr-16`}
-            placeholder="Password"
-            autoComplete={isSignUp ? "new-password" : "current-password"}
-            required
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute inset-y-0 right-3 text-xs text-muted hover:text-fg"
-          >
-            {showPassword ? "Hide" : "Show"}
-          </button>
-        </div>
-
-        {isSignUp && (
-          <input
-            type={showPassword ? "text" : "password"}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className={inputClass}
-            placeholder="Confirm Password"
-            autoComplete="new-password"
-            required
-          />
-        )}
-
-        <div className="flex justify-between text-sm text-muted">
-          {isSignUp ? (
-            <span />
-          ) : (
-            <button type="button" className="hover:text-fg">
-              Forgot password?
-            </button>
-          )}
-          <button type="button" onClick={switchMode} className="hover:text-fg">
-            {isSignUp ? "Already have an account? Login" : "Create account"}
-          </button>
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-primary px-8 py-2.5 text-sm font-medium text-primary-fg transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
+      <div className="flex items-center justify-center px-6 py-10 sm:px-12">
+        <form
+          onSubmit={onSubmitHandler}
+          className="flex w-full max-w-sm flex-col gap-5"
         >
-          {loading ? "Please wait..." : isSignUp ? "Sign Up" : "Sign In"}
-        </button>
-      </form>
+          <div>
+            <div className="flex items-center gap-3 text-muted">
+              <p className="h-0.5 w-8 bg-current"></p>
+              <p className="text-xs tracking-[0.3em]">MY ACCOUNT</p>
+            </div>
+            <h1 className="prata-regular mt-3 text-4xl">
+              {isSignUp ? "Sign Up" : "Login"}
+            </h1>
+            <p className="mt-2 text-sm text-muted">
+              {isSignUp
+                ? "Create an account to start shopping"
+                : "Welcome back"}
+            </p>
+          </div>
+
+          {/* Segmented toggle */}
+          <div className="grid grid-cols-2 border border-line p-1 text-sm">
+            {["Login", "Sign Up"].map((mode) => (
+              <button
+                key={mode}
+                type="button"
+                onClick={() => goTo(mode)}
+                className={`cursor-pointer py-2 transition-colors duration-300 ${
+                  currentState === mode
+                    ? "bg-primary text-primary-fg"
+                    : "text-muted hover:text-fg"
+                }`}
+              >
+                {mode}
+              </button>
+            ))}
+          </div>
+
+          {/* key={currentState}: new mode = fresh wrapper, so the entrance animation replays */}
+          <div key={currentState} className="page-in flex flex-col gap-5">
+            {isSignUp && (
+              <FormField
+                id="name"
+                label="Name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Your full name"
+                autoComplete="name"
+                required
+              />
+            )}
+
+            <FormField
+              id="email"
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              autoComplete="email"
+              required
+            />
+
+            <PasswordField
+              id="password"
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              show={showPassword}
+              onToggleShow={() => setShowPassword((prev) => !prev)}
+              autoComplete={isSignUp ? "new-password" : "current-password"}
+              showStrength={isSignUp}
+            />
+
+            {isSignUp && (
+              <FormField
+                id="confirm"
+                label="Confirm Password"
+                type={showPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm Password"
+                autoComplete="new-password"
+                error={mismatch ? "Passwords don't match" : ""}
+                required
+              />
+            )}
+
+            {!isSignUp && (
+              <button
+                type="button"
+                className="-mt-2 cursor-pointer self-end text-sm text-muted transition-colors hover:text-fg"
+              >
+                Forgot password?
+              </button>
+            )}
+          </div>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="group flex cursor-pointer items-center justify-center gap-3 bg-primary px-8 py-3.5 text-sm font-medium tracking-[0.2em] text-primary-fg transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {loading ? (
+              <>
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                PLEASE WAIT
+              </>
+            ) : (
+              <>
+                {isSignUp ? "CREATE ACCOUNT" : "SIGN IN"}
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                >
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </>
+            )}
+          </button>
+
+          <p className="text-center text-sm text-muted">
+            {isSignUp ? "Already have an account?" : "New here?"}{" "}
+            <button
+              type="button"
+              onClick={switchMode}
+              className="cursor-pointer text-fg underline underline-offset-4"
+            >
+              {isSignUp ? "Login" : "Create account"}
+            </button>
+          </p>
+        </form>
+      </div>
     </div>
   );
 };

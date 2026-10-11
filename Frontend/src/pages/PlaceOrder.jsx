@@ -6,6 +6,11 @@ import { ShopContext } from "../context/ShopContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 
+// One shared style for every field instead of repeating it nine times
+const fieldClass =
+  "rounded border border-line bg-surface px-3.5 py-1.5 text-fg outline-none transition placeholder:text-muted focus:border-primary";
+const inputClass = `w-full ${fieldClass}`;
+
 const PlaceOrder = () => {
   const [method, setMethod] = useState("cod");
   const {
@@ -34,7 +39,7 @@ const PlaceOrder = () => {
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
 
-    setFormData((date) => ({ ...date, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const onSubmitHandler = async (e) => {
@@ -84,6 +89,7 @@ const PlaceOrder = () => {
       toast.error(error.message);
     }
   };
+
   return (
     <form
       onSubmit={onSubmitHandler}
@@ -102,7 +108,7 @@ const PlaceOrder = () => {
             value={formData.firstName}
             type="text"
             placeholder="First name"
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className={inputClass}
           />
           <input
             required
@@ -111,7 +117,7 @@ const PlaceOrder = () => {
             value={formData.lastName}
             type="text"
             placeholder="Last name"
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className={inputClass}
           />
         </div>
         <input
@@ -121,7 +127,7 @@ const PlaceOrder = () => {
           value={formData.email}
           type="email"
           placeholder="Email address"
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+          className={inputClass}
         />
         <input
           required
@@ -130,7 +136,7 @@ const PlaceOrder = () => {
           value={formData.street}
           type="text"
           placeholder="Street Address"
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+          className={inputClass}
         />
         <div className="flex gap-3">
           <input
@@ -140,7 +146,7 @@ const PlaceOrder = () => {
             value={formData.city}
             type="text"
             placeholder="District"
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className={inputClass}
           />
           <input
             required
@@ -148,8 +154,8 @@ const PlaceOrder = () => {
             name="state"
             value={formData.state}
             type="text"
-            placeholder="Sub-district        ex:Bheramara"
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            placeholder="Sub-district (e.g. Bheramara)"
+            className={inputClass}
           />
         </div>
         <div className="flex gap-3">
@@ -160,7 +166,7 @@ const PlaceOrder = () => {
             value={formData.zipcode}
             type="number"
             placeholder="ZipCode"
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className={inputClass}
           />
           <input
             required
@@ -169,14 +175,14 @@ const PlaceOrder = () => {
             value={formData.country}
             type="text"
             placeholder="Country"
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className={inputClass}
           />
         </div>
         <div className="flex gap-2">
           <select
             aria-label="Country code"
             defaultValue="+880"
-            className="w-28 shrink-0 border border-gray-300 rounded py-1.5 px-3.5"
+            className={`${fieldClass} w-28 shrink-0`}
           >
             <option value="+880">BD +880</option>
             <option value="+1">US +1</option>
@@ -193,10 +199,11 @@ const PlaceOrder = () => {
             inputMode="numeric"
             placeholder="Phone number"
             aria-label="Phone number"
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className={inputClass}
           />
         </div>
       </div>
+
       {/*--------------RIGHT SIDE------------------- */}
       <div className="mt-8">
         <div className="mt-8 min-w-80">
@@ -213,25 +220,33 @@ const PlaceOrder = () => {
               <p
                 className={`min-w-3.5 h-3.5 border rounded-full ${method === "bkash" ? "bg-green-500" : ""}`}
               ></p>
-              <img src={assets.bksash_logo} className="h-7 mx-4" alt="" />
+              <img
+                src={assets.bksash_logo}
+                className="h-7 mx-4 dark:rounded dark:bg-white dark:p-0.5"
+                alt=""
+              />
             </div>
             <div
               onClick={() => setMethod("nagad")}
-              className="flex items-center gap-3 border  p-2 px-2 cursor-pointer"
+              className="flex items-center gap-3 border p-2 px-2 cursor-pointer"
             >
               <p
                 className={`min-w-3.5 h-3.5 border rounded-full ${method === "nagad" ? "bg-green-500" : ""}`}
               ></p>
-              <img src={assets.nagad_logo} className="h-7 mx-4" alt="" />
+              <img
+                src={assets.nagad_logo}
+                className="h-7 mx-4 dark:rounded dark:bg-white dark:p-0.5"
+                alt=""
+              />
             </div>
             <div
               onClick={() => setMethod("cod")}
-              className="flex items-center gap-3 border  p-2 px-2 cursor-pointer"
+              className="flex items-center gap-3 border p-2 px-2 cursor-pointer"
             >
               <p
                 className={`min-w-3.5 h-3.5 border rounded-full ${method === "cod" ? "bg-green-500" : ""}`}
               ></p>
-              <p className="text-gray-500 text-sm font-medium mx-4">
+              <p className="text-muted text-sm font-medium mx-4">
                 CASH ON DELIVERY
               </p>
             </div>
@@ -239,7 +254,7 @@ const PlaceOrder = () => {
           <div className="w-full text-end mt-8">
             <button
               type="submit"
-              className="bg-black text-white px-16 py-3 text-sm rounded"
+              className="bg-primary text-primary-fg px-16 py-3 text-sm rounded cursor-pointer transition hover:opacity-80"
             >
               PLACE ORDER
             </button>

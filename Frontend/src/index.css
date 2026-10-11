@@ -2,10 +2,15 @@
 
 @import "tailwindcss";
 
+/* NEW: make dark: follow the .dark class (your toggle), not the OS setting */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ---------- Theme tokens ---------- */
 :root {
+  color-scheme: light; /* NEW */
   --bg: #ffffff;
   --surface: #ffffff;
+  --soft: #f4f4f5; /* NEW: subtle fills (old gray-50/100) */
   --fg: #1f2937;
   --muted: #6b7280;
   --line: #e5e7eb;
@@ -14,8 +19,10 @@
 }
 
 .dark {
+  color-scheme: dark; /* NEW: native inputs, autofill, select popups */
   --bg: #0b0b0c;
   --surface: #151517;
+  --soft: #1c1c1f; /* NEW */
   --fg: #f3f4f6;
   --muted: #9ca3af;
   --line: #3f3f46;
@@ -25,7 +32,9 @@
 
 @theme inline {
   --color-bg: var(--bg);
+  --color-page: var(--bg); /* NEW: bg-page = same as bg-bg */
   --color-surface: var(--surface);
+  --color-soft: var(--soft); /* NEW */
   --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-line: var(--line);
@@ -71,7 +80,7 @@ input[type="number"] {
   *,
   ::after,
   ::before {
-    border-color: var(--line); /* was var(--color-gray-200) */
+    border-color: var(--line);
   }
   button {
     cursor: pointer;
@@ -80,7 +89,24 @@ input[type="number"] {
 
 @media (max-width: 640px) {
   a.active {
-    background-color: var(--primary); /* was black */
-    color: var(--primary-fg);         /* was white */
+    background-color: var(--primary);
+    color: var(--primary-fg);
   }
+}
+
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+.page-in { animation: page-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .page-in { animation: none; }
+}
+
+/* CHANGED: raw tokens instead of --color-* */
+.Toastify {
+  --toastify-color-light: var(--surface);
+  --toastify-text-color-light: var(--fg);
+  --toastify-color-progress-light: var(--primary);
 }

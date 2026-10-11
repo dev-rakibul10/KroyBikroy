@@ -11,14 +11,16 @@ import Product from "./pages/Product"
 import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
 import SearchBar from "./components/SearchBar"
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import ScrollToTop from "./components/ScrollToTop"
 
 const App = () => {
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
-      <ToastContainer />
+      <ToastContainer theme="light" />
       <Navbar />
       <SearchBar />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

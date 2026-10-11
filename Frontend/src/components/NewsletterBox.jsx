@@ -1,27 +1,33 @@
-
-
 const NewsletterBox = () => {
-    const onSubmitHandler =(e) => {
-        e.preventDefault()
-    }
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="text-center">
-      <p className="text-2xl font-medium text-shadow-gray-800">
+      <p className="text-2xl font-medium text-fg">
         Subscribe now & get 20% off
       </p>
-      <p className="text-gray-400 mt-5 mb-5">
-        {" "}
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus,
-        modi.
+      <p className="text-muted mt-5 mb-5">
+        Join our list for early access to new drops, football-inspired
+        collections and members-only offers. No spam, unsubscribe anytime.
       </p>
-      <form onSubmit={onSubmitHandler} className="w-full sm:w-1/2 flex items-center gap-3 mx-auto border pl-3  ">
+      <form
+        onSubmit={onSubmitHandler}
+        className="w-full sm:w-1/2 flex items-center gap-3 mx-auto border border-line pl-3 transition-colors focus-within:border-primary"
+      >
         <input
           type="email"
           placeholder="Enter your email"
-          className="w-full sm:flex-1 outline-none "
+          className="w-full sm:flex-1 bg-transparent text-fg placeholder:text-muted outline-none"
           required
         />
-        <button type="submit" className="bg-black text-white text-xs px-10 py-4 cursor-pointer">SUBSCRIBE</button>
+        <button
+          type="submit"
+          className="bg-primary text-primary-fg text-xs px-10 py-4 cursor-pointer transition hover:opacity-80"
+        >
+          SUBSCRIBE
+        </button>
       </form>
     </div>
   );

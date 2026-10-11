@@ -8,6 +8,14 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/main.jsx">
+          (function () {
+        var saved = localStorage.getItem("theme");
+        var dark = saved
+          ? saved === "dark"
+          : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+      })();
+    </script>
   </body>
 </html>
